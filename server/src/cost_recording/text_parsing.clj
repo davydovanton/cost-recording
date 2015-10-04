@@ -10,7 +10,8 @@
 (defn costs [day] 
   (let [lines (str/split day #"\n")
         date (first lines)]
-    (map #(create-cost-hash date %) (rest lines))))
+    (mapv #(create-cost-hash date %) (rest lines))))
 
-(defn parse [text]
-  (map #(costs %) (split-by-day text)))
+(defn cost-parse [text]
+    (vec (flatten
+        (mapv #(costs %) (split-by-day text)))))
