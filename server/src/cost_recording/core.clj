@@ -13,6 +13,10 @@
   (GET "/api/index.json" []
        {:body {:hello "world"}})
 
+  (GET "/api/parse_costs.json" request
+       (let [value (:value (:params request))]
+         {:body (cost-parse value)}))
+
   (GET "/api/costs.json" []
        {:body (cost-parse month)})
 
