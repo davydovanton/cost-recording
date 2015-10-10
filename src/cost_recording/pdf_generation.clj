@@ -9,7 +9,7 @@
   (identity
     (into []
           (concat [[:paragraph date]]
-                  (map #(identity [:paragraph {:encoding :unicode} (format-day %)])
+                  (map #(identity [:paragraph (format-day %)])
                        data)))))
 
 (defn make-paragraph [data]
@@ -37,14 +37,15 @@
 
 
 (defn total-text [data]
-  (format "\n--------------------\nTotal: %7d" (total-spelling data)))
+  (format "\n--------------------\nTotal: %7d rubs" (total-spelling data)))
 
 (defn total [data]
-  [:paragraph {:encoding :unicode} (total-text data)])
+  [:paragraph (total-text data)])
 
 (defn generate-pdf [data]
   (pdf
-    [{:font {:encoding :unicode}}
+    [{:font {:encoding "UniJIS-UCS2-H"
+       :ttf-name "HeiseiKakuGo-W5"}}
       (make-paragraph data)
       (month-chart data)
       (total data)]
