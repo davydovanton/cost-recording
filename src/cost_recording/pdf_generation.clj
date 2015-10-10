@@ -17,9 +17,27 @@
           (map #(make-paragraph-by-day (first %) (second %))
                (group-by :date data))))
 
+(defn total-spelling [data]
+  (reduce + (map #(read-string (:cost %)) data)))
+
+(defn month-stat [data]
+  (map #(identity [(first %) (total-spelling (second %))])
+       (group-by :date data)))
+
+(defn month-chart [data]
+  [:chart
+   {:type :line-chart
+    :time-series true
+    :time-format "dd.MM"
+    :title "Line Chart"
+    :x-label "data"
+    :y-label "spending"}
+    (into []
+          (concat ["spending"] (month-stat data)))])
+
+
 (defn total-text [data]
-  (let [total-cost (reduce + (map #(read-string (:cost %)) data))]
-    (format "\n--------------------\nTotal: %7d" total-cost)))
+  (format "\n--------------------\nTotal: %7d" (total-spelling data)))
 
 (defn total [data]
   [:paragraph {:encoding :unicode} (total-text data)])
@@ -28,5 +46,6 @@
   (pdf
     [{:font {:encoding :unicode}}
       (make-paragraph data)
+      (month-chart data)
       (total data)]
     "doc.pdf"))

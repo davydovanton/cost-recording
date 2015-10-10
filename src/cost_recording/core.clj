@@ -6,8 +6,7 @@
 (defn text [args]
   (let [default-file "resources/test.txt"]
     (slurp
-      (or (first args) default-file)
-      :encoding "UTF-8")))
+      (or (first args) default-file))))
 
 (defn -main [& args]
   (generate-pdf
